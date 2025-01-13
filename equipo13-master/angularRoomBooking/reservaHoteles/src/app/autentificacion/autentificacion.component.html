@@ -1,0 +1,75 @@
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Autenticación</h2>
+
+    <!-- Contenedor con pestañas para alternar entre formularios -->
+    <div class="bg-light p-4 rounded shadow-lg w-50 mx-auto">
+        <div class="d-flex justify-content-center mb-3">
+            <!-- Botón Iniciar Sesión -->
+            <button class="btn btn-link text-decoration-none fw-bold mx-2" [class.text-primary]="activeForm === 'login'"
+                [class.text-muted]="activeForm !== 'login'" (click)="change('login')">
+                Iniciar Sesión
+            </button>
+            <!-- Botón Registrarse -->
+            <button class="btn btn-link text-decoration-none fw-bold mx-2"
+                [class.text-primary]="activeForm === 'register'" [class.text-muted]="activeForm !== 'register'"
+                (click)="change('register')">
+                Registrarse
+            </button>
+        </div>
+
+        <!-- Formulario Iniciar Sesión -->
+        <form *ngIf="activeForm === 'login'" (ngSubmit)="login()" #loginForm="ngForm" class="row g-3">
+            <div class="form-floating mb-3">
+                <input name="email" [(ngModel)]="user.email" type="email" class="form-control" id="loginEmail"
+                    placeholder="name@example.com" required>
+                <label for="loginEmail">Correo electrónico</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input name="password" [(ngModel)]="userPassword" type="password" class="form-control"
+                    id="loginPassword" placeholder="********" required>
+                <label for="loginPassword" class="form-label">Contraseña</label>
+            </div>
+            <div *ngIf="mostrarMensajeInicio" class="alert alert-danger">
+                {{ mensaje }}
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary w-100"
+                    [disabled]="!user.email || !userPassword">Iniciar Sesión</button>
+            </div>
+        </form>
+
+        <!-- Formulario Registrarse -->
+        <form *ngIf="activeForm === 'register'" (ngSubmit)="register()" #registerForm="ngForm" class="row g-3">
+            <div class="form-floating mb-3">
+                <input name="name" [(ngModel)]="registerData.name" type="text" class="form-control" id="registerName"
+                    placeholder="Tu Nombre" required>
+                <label for="registerName" class="form-label">Nombre Completo</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input name="email" [(ngModel)]="registerData.email" type="email" class="form-control"
+                    id="registerEmail" placeholder="name@example.com" required>
+                <label for="registerEmail">Correo electrónico</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input name="password" [(ngModel)]="registerData.password" type="password" class="form-control"
+                    id="registerPassword" placeholder="********" required>
+                <label for="registerPassword" class="form-label">Contraseña</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input name="confirmPassword" [(ngModel)]="registerData.confirmPassword" type="password"
+                    class="form-control" id="registerConfirmPassword" placeholder="********" required>
+                <label for="registerConfirmPassword" class="form-label">Repita la contraseña</label>
+            </div>
+
+            <div *ngIf="mostrarMensajeRegistro" class="alert alert-danger">
+                {{ mensaje }}
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-secondary w-100"
+                    [disabled]="!registerData.email || !registerData.password || !registerData.name || !registerData.confirmPassword">
+                    Registrarse
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,191 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <form class="form-inline">
+                <fieldset class="form-group col-sm-12"></fieldset>
+                <fieldset class="form-group col-sm-1">
+                    <!--  Boton Bootstrap-->
+                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#Boton+">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-house-add-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 1 1-1 0v-1h-1a.5.5 0 1 1 0-1h1v-1a.5.5 0 0 1 1 0" />
+                            <path
+                                d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z" />
+                            <path d="m8 3.293 4.712 4.712A4.5 4.5 0 0 0 8.758 15H3.5A1.5 1.5 0 0 1 2 13.5V9.293z" />
+                        </svg>
+                    </button>
+                </fieldset>
+            </form>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Dirección</th>
+                        <th>ID</th>
+                        <th>Información Extra</th>
+                        <th>Control</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let hotel of Hotels">
+                        <td><i>{{ hotel.name }}</i></td>
+                        <td>
+                            <i>{{ hotel.address.streetKind }} {{ hotel.address.streetName }} {{ hotel.address.number }}
+                                {{ hotel.address.postCode }}</i>
+                        </td>
+                        <td><i>{{ hotel.id }}</i></td>
+                        <td><i>{{ hotel.address.otherInfo }}</i></td>
+                        <td>
+                            <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
+                                data-bs-target="#Edit+" (click)="seleccionarHotel(hotel)">
+                                <!-- Aquí llamamos al método para seleccionar el hotel -->
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path
+                                        d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                    <path fill-rule="evenodd"
+                                        d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                </svg>
+                            </button>
+                            <a class="btn btn-danger ms-3" (click)="borrar(hotel.id)">-</a>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<!--  Empezamos con modales :D-->
+<!--  Modal para registrar nuevo hotel :D-->
+<div class="modal fade" id="Boton+" tabindex="-1" aria-labelledby="no carga" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Hotel</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="ngAddHotel()" #signInForm="ngForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nombre Hotel</label>
+                        <input name="name" [(ngModel)]="hotel.name" type="text" class="form-control" id="name"
+                            aria-describedby="nameHelp" required>
+
+                    </div>
+                    <div class="mb-3">
+                        <h1 for="address" class="form-label  fs-5">Direccion Hotel</h1>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Via</label>
+                        <input name="address" [(ngModel)]="hotel.address.streetKind" type="text" class="form-control"
+                            id="address" aria-describedby="nameHelp" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addressn" class="form-label">Nombre</label>
+                        <input name="addressn" [(ngModel)]="hotel.address.streetName" type="text" class="form-control"
+                            id="addressn" aria-describedby="nameHelp" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addressNU" class="form-label">Numero</label>
+                        <input name="addressNU" [(ngModel)]="hotel.address.number" type="number" class="form-control"
+                            id="addressNU" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addressCP" class="form-label">CP</label>
+                        <input name="addressCP" [(ngModel)]="hotel.address.postCode" type="text" class="form-control"
+                            id="addressCP" aria-describedby="nameHelp" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addressO" class="form-label">Informacion Opcional</label>
+                        <input name="addressO" [(ngModel)]="hotel.address.otherInfo" type="text" class="form-control"
+                            id="addressO">
+                    </div>
+                    <h2 class="form-label fs-5">Añadir Habitaciones</h2>
+                    <div class="mb-3">
+                        <label for="roomNumber" class="form-label">Número de Habitación</label>
+                        <input name="roomNumber" [(ngModel)]="newRoom.roomNumber" type="text" class="form-control"
+                            id="roomNumber">
+                    </div>
+                    <div class="mb-3">
+                        <label for="roomType" class="form-label">Tipo de Habitación</label>
+                        <select id="roomType" name="roomType" name="roomType" [(ngModel)]="newRoom.roomType"
+                            class="form-select" id="roomType">
+                            <option value="SINGLE" selected>SINGLE</option>
+                            <option value="DOUBLE">DOUBLE</option>
+                            <option value="SUITE">SUITE</option>
+                        </select>
+                    </div>
+                    <div class="form-check">
+                        <input name="available" [(ngModel)]="newRoom.available" type="checkbox" class="form-check-input"
+                            id="available">
+                        <label for="available" class="form-check-label">Disponible</label>
+                    </div>
+                    <button type="button" class="btn btn-secondary mt-2" (click)="addRoom()">Añadir Habitación</button>
+                    <ul class="mt-3">
+
+                        <li *ngFor="let room of hotel.roomList">
+                            Habitación {{ room.roomNumber }} - {{ room.roomType }} ({{ room.available ? 'Disponible' :
+                            'No disponible' }})
+                        </li>
+                    </ul>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" [disabled]="!signInForm.valid">Añadir
+                            Hotel</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal para las habitaciones de un hotel y su gestion -->
+
+<div class="modal fade" id="Edit+" tabindex="-1" aria-labelledby="no carga" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="Habitaciones">Lista Habitaciones De <i *ngIf="selectedHotel">{{
+                        selectedHotel.name }}</i></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Tipo</th>
+                            <th>Disponibilidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let room of selectedHotel?.roomList">
+                            <td>{{ room.roomNumber }}</td>
+                            <td>{{ room.roomType }}</td>
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input type="checkbox" class="form-check-input"
+                                        (change)="onCheckboxChange($event, room)"
+                                        [checked]="room.available" />
+                    
+                                    <div *ngIf="mostrarMensaje" class="text-danger" style="font-size: 0.9rem;">
+                                        {{ room.msgerror }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

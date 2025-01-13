@@ -1,0 +1,148 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <form class="form-inline">
+                <fieldset class="form-group col-sm-12"></fieldset>
+                <fieldset class="form-group col-sm-1">
+                    <!--  Boton Bootstrap-->
+                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#Boton+">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-house-add-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 1 1-1 0v-1h-1a.5.5 0 1 1 0-1h1v-1a.5.5 0 0 1 1 0" />
+                            <path
+                                d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z" />
+                            <path d="m8 3.293 4.712 4.712A4.5 4.5 0 0 0 8.758 15H3.5A1.5 1.5 0 0 1 2 13.5V9.293z" />
+                        </svg>
+                    </button>
+                </fieldset>
+            </form>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre usuario</th>
+                        <th>Fecha de inicio</th>
+                        <th>Fecha de fin</th>
+                        <th>Nombre hotel</th>
+                        <th>Número de habitación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let booking of Bookings">
+                        <td><i>{{ booking.nameUser }}</i></td>
+                        <td><i>{{ booking.startDate }}</i></td>
+                        <td><i>{{ booking.endDate }}</i></td>
+                        <td><i>{{ booking.nameHotel }}</i></td>
+                        <td><i>{{ booking.numberRoom }}</i></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<!--  Empezamos con modales :D-->
+<!--  Modal para registrar nueva reserva :D-->
+<div class="modal fade" id="Boton+" tabindex="-1" aria-labelledby="no carga" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir reserva</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-center">
+                    <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" class="row g-3 bg-light p-4 rounded shadow-lg"
+                    style="max-width: 800px;"
+        >
+                        <div class="col-md-6">
+                            <label for="validationDefault01" class="form-label">Fecha de inicio</label>
+                            <input type="date" class="form-control" id="validationDefault01" name="startDate"
+                                [(ngModel)]="booking.startDate" [max]="booking.endDate ? booking.endDate : null"
+                                [min]="getCurrentDate()" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="validationDefault02" class="form-label">Fecha de fin</label>
+                            <input type="date" class="form-control" id="validationDefault02" name="endDate"
+                                [(ngModel)]="booking.endDate" [min]="booking.startDate ? booking.startDate : null"
+                                required>
+                        </div>
+                        <h5 class="text-center mb-4">Seleccione el usuario</h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Correo electrónico</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of Users" (click)="selectUser(user)"
+                                    [class.table-active]="userSeleccionado === user">
+                                    <td>
+                                        <i>{{user.name}}</i>
+                                    </td>
+                                    <td>
+                                        <i>{{user.email}}</i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="text-center mb-4">Seleccione el hotel</h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nombre</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let hotel of Hotels" (click)="selectHotel(hotel)"
+                                    [class.table-active]="hotelSeleccionado === hotel">
+                                    <td>
+                                        <i>{{hotel.name}}</i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h5 class="text-center mb-4">Seleccione la habitación</h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Tipo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let room of Rooms">
+                                    <tr *ngIf="room.available" (click)="selectRoom(room)"
+                                        [class.table-active]="roomSeleccionada === room">
+                                        <td>
+                                            <i>{{ room.roomNumber }}</i>
+                                        </td>
+                                        <td>
+                                            <i>{{ room.roomType }}</i>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+
+                            </tbody>
+                        </table>
+                        <div class="col-12">
+                            <button class="btn btn-primary w-100" type="submit"
+                                [disabled]="!booking.startDate || !booking.endDate || userSeleccionado === null || hotelSeleccionado === null || roomSeleccionada === null">
+                                Añadir reserva
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+                <div *ngIf="mostrarMensaje" class="alert alert-success text-center mt-4">
+                    {{ mensaje }}
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

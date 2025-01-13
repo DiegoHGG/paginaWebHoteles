@@ -1,0 +1,33 @@
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid d-flex align-items-center">
+    <!-- Texto a la izquierda -->
+    <h1  class="navbar-brand ms-3">Room Booking</h1>
+    
+    <!-- Botón para dispositivos móviles -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <!-- Enlaces de navegación centrados -->
+    <div class="collapse navbar-collapse mx-auto" id="navbarNav">
+      <ul class="navbar-nav gap-3">
+        <li class="nav-item">
+          <a class="nav-link" [class.disabled]="!isAuthenticated()" aria-current="page" href="/RoomBooking/users">Usuarios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.disabled]="!isAuthenticated()" href="/RoomBooking/bookings">Reservas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.disabled]="!isAuthenticated()" href="/RoomBooking/hotels">Hoteles</a>
+        </li>
+      </ul>
+    </div>
+
+    
+    <button *ngIf="isAuthenticated()" class="btn btn-outline-danger ms-3" (click)="logout()">Cerrar Sesión</button>
+  </div>
+</nav>
+
+
+<router-outlet></router-outlet>
